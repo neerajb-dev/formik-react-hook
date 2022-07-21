@@ -12,6 +12,26 @@ const onSubmit = (values) => {
   console.log("form data", values);
 };
 
+const validate = (values) => {
+  let errors = {};
+
+  if (!values.name) {
+    errors.name = "Required";
+  }
+
+  if (!values.email) {
+    errors.email = "Required";
+  } else if (/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/.test(values.email)) {
+    errors.email = "Invalid email format";
+  }
+
+  if (!values.channel) {
+    errors.channel = "Required";
+  }
+
+  return errors;
+};
+
 // yup validation schema object
 const validationSchema = Yup.object({
   name: Yup.string().required("Required"),
@@ -40,7 +60,9 @@ const YoutubeForm = () => {
             type="text"
             id="name"
             name="name"
-            {...formik.getFieldProps("name")}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.name}
           />
           {/* render error if name is empty */}
           {formik.touched.name && formik.errors.name ? (
@@ -54,7 +76,9 @@ const YoutubeForm = () => {
             type="email"
             id="email"
             name="email"
-            {...formik.getFieldProps("email")}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.email}
           />
           {/* render errors if email is empty or invalid */}
           {formik.touched.email && formik.errors.email ? (
@@ -67,7 +91,9 @@ const YoutubeForm = () => {
             type="text"
             id="channel"
             name="channel"
-            {...formik.getFieldProps("channel")}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.channel}
           />
           {/* render errors if email is empty or invalid */}
           {formik.touched.channel && formik.errors.channel ? (
