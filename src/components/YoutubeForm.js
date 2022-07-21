@@ -1,35 +1,41 @@
 import React from "react";
 import { useFormik } from "formik";
 
+const initialValues = {
+  name: "",
+  email: "",
+  channel: ""
+};
+
+const onSubmit = (values) => {
+  console.log("form data", values);
+};
+
+const validate = (values) => {
+  let errors = {};
+
+  if (!values.name) {
+    errors.name = "Required";
+  }
+
+  if (!values.email) {
+    errors.email = "Required";
+  } else if (/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/.test(values.email)) {
+    errors.email = "Invalid email format";
+  }
+
+  if (!values.channel) {
+    errors.channel = "Required";
+  }
+
+  return errors;
+};
+
 const YoutubeForm = () => {
   const formik = useFormik({
-    initialValues: {
-      name: "", // properties corresponds to name attributes of individual fields
-      email: "",
-      channel: ""
-    },
-    onSubmit: (values) => {
-      console.log("form data", values);
-    },
-    validate: (values) => {
-      let errors = {};
-
-      if (!values.name) {
-        errors.name = "Required";
-      }
-
-      if (!values.email) {
-        errors.email = "Required";
-      } else if (/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/.test(values.email)) {
-        errors.email = "Invalid email format";
-      }
-
-      if (!values.channel) {
-        errors.channel = "Required";
-      }
-
-      return errors;
-    }
+    initialValues,
+    onSubmit,
+    validate
   });
 
   // console.log("Form values", formik.values);
